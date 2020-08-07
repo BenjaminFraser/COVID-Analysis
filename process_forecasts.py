@@ -744,13 +744,18 @@ if __name__ == "__main__":
     ireland_daily_df = pd.read_csv(os.path.join(DATA_SOURCE_DIR, 'ireland-regions-confirmed-per-pop.csv'),
                                index_col='Date')
     ni_daily_df = pd.read_csv(os.path.join(DATA_SOURCE_DIR, 'ni-regions-confirmed-per-pop.csv'),
-                               index_col='Date')
+                               parse_dates=['Date'], index_col='Date')
     other_daily_df = pd.read_csv(os.path.join(DATA_SOURCE_DIR, 'other-regions-confirmed-per-pop.csv'),
                                index_col='Date')
 
     
     # Scotland has a huge data dump on 15 Jun 20 - temporarily correct this for modelling
     scotland_dump_date_data = scotland_daily_df.loc['2020-06-15'].copy()
+
+    # copy original uncorrected data
+    scotland_daily_df_original = scotland_daily_df.copy()
+    scotland_daily_df_original['Day'] = range(1, scotland_daily_df_original.shape[0] + 1)
+    scotland_daily_df_original.set_index('Day', drop=True, inplace=True)
 
     # set the data to NaN, and interpolate suitable values using linear interpolation
     scotland_daily_df.loc['2020-06-15'] = np.nan
@@ -759,12 +764,14 @@ if __name__ == "__main__":
     # obtain Scotland areas for use later
     SCOTLAND_AREAS = list(scotland_daily_df.columns)
 
-    # NI also has a large data dump / correction on 25-Jun-20
+    # NI also has a large data dump / correction on 25-Jun-20 - repeat the same as above
     ni_dump_date_data = ni_daily_df.loc['2020-06-25'].copy()
     ni_daily_df.loc['2020-06-25'] = np.nan
+    ni_daily_df_original = ni_daily_df.copy()
+    ni_daily_df_original['Day'] = range(1, ni_daily_df_original.shape[0] + 1)
+    ni_daily_df_original.set_index('Day', drop=True, inplace=True)
     ni_daily_df.interpolate(method='slinear', inplace=True)
     NI_AREAS = list(ni_daily_df.columns)
-
 
     # create a dictionary containing all location polynomial results
     polyreg_preds_dict = dict()
@@ -905,6 +912,8 @@ if __name__ == "__main__":
 
     # save changes to workbook
     workbook.save(FILE_SAVE_NAME)
+    
+    print(f"All analysis complete and saved as {FILE_SAVE_NAME}.")
 
     # delete all temporary files and data
     if os.path.isfile("temp_excelfile.xlsx"):
