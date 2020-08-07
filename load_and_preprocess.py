@@ -16,7 +16,7 @@ SAVE_DIR = os.path.join(os.getcwd(), 'Preprocessed_data')
 DATA_START = '2020-03-10'
 
 # load population mappings for all uk towns / regions
-POPULATION_MAPPINGS = pd.read_excel('UK-population-mappings.xlsx', 
+POPULATION_MAPPINGS = pd.read_excel('UK-population-mappings.csv', 
                                     index_col='name').to_dict()
 POPULATION_MAPPINGS = POPULATION_MAPPINGS['Population']
 
