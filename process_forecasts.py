@@ -336,8 +336,25 @@ def nat_cubic_spline_regr(dataframe, column_name, n_knots, predict_ahead=0, n_es
         predictions = m.predict(x_range)
         plt.plot(x_range, predictions, color='lightgrey', alpha=0.5, zorder=1)
     
-    # plot original data points
-    plt.scatter(x, y, marker='o', color='tab:blue', zorder=4, label='Original data')
+    # if scotland - modify to plot original uncorrected data
+    if column_name in SCOTLAND_AREAS:
+        # set current input features and output labels
+        x_original = scotland_daily_df_original.index.values.reshape(-1, 1)
+        y_original = scotland_daily_df_original[column_name].values.ravel()
+        plt.scatter(x_original, y_original, marker='o', color='tab:blue', 
+                    zorder=4, label='Original data')
+    
+    # if Northern Ireland - modify to plot original uncorrected data
+    elif column_name in NI_AREAS:
+        # set current input features and output labels
+        x_original = ni_daily_df_original.index.values.reshape(-1, 1)
+        y_original = ni_daily_df_original[column_name].values.ravel()
+        plt.scatter(x_original, y_original, marker='o', color='tab:blue', 
+                    zorder=4, label='Original data')
+    
+    # otherwise - plot original data as normal
+    else:
+        plt.scatter(x, y, marker='o', color='tab:blue', zorder=4, label='Original data')
 
     # Bagging model predictions
     bagging_preds = model.predict(x_range)
@@ -739,6 +756,16 @@ if __name__ == "__main__":
     # set the data to NaN, and interpolate suitable values using linear interpolation
     scotland_daily_df.loc['2020-06-15'] = np.nan
     scotland_daily_df.interpolate(method='slinear', inplace=True)
+
+    # obtain Scotland areas for use later
+    SCOTLAND_AREAS = list(scotland_daily_df.columns)
+
+    # NI also has a large data dump / correction on 25-Jun-20
+    ni_dump_date_data = ni_daily_df.loc['2020-06-25'].copy()
+    ni_daily_df.loc['2020-06-25'] = np.nan
+    ni_daily_df.interpolate(method='slinear', inplace=True)
+    NI_AREAS = list(ni_daily_df.columns)
+
 
     # create a dictionary containing all location polynomial results
     polyreg_preds_dict = dict()
