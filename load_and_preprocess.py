@@ -16,7 +16,7 @@ SAVE_DIR = os.path.join(os.getcwd(), 'Preprocessed_data')
 DATA_START = '2020-03-10'
 
 # load population mappings for all uk towns / regions
-POPULATION_MAPPINGS = pd.read_excel('UK-population-mappings.csv', 
+POPULATION_MAPPINGS = pd.read_csv('UK-population-mappings.csv', 
                                     index_col='name').to_dict()
 POPULATION_MAPPINGS = POPULATION_MAPPINGS['Population']
 
@@ -132,12 +132,12 @@ def load_preprocess_england(regional=False, start_date=DATA_START,
 
     # if regional selected only filter by regions
     if regional:
-        england_df = eng_cases[eng_cases['Area type'] == 'Region'][cols].copy()
+        england_df = eng_cases[eng_cases['Area type'] == 'region'][cols].copy()
 
     # else filter by all UTLA
     else:
         england_df = eng_cases[eng_cases['Area type'] == 
-                                         'Upper tier local authority'][cols].copy()
+                                         'utla'][cols].copy()
 
 
     # format dataframe, columns and index into selected form
