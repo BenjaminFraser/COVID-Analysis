@@ -47,7 +47,7 @@ IRELAND_URL = ('http://opendata-geohive.hub.arcgis.com/datasets/d9be85b30d7748b5
                '8aede63_0.csv?outSR={%22latestWkid%22:3857,%22wkid%22:102100}')
 
 # filename for manually collected locations (Northern ireland, Jersey, Isle of Man, Guernsey)
-MISC_GATHERED_AREAS = 'Misc_Gathered_Data.xlsx'
+MISC_GATHERED_AREAS = 'Misc_scraped_data.csv'
 
 
 def cumulative_to_daily(data_df):
@@ -337,7 +337,7 @@ def load_preprocess_NI(start_date=DATA_START, cumulative=False, per_pop=True):
         Pandas DataFrame object with COVID-19 figures in selected format.
     """
 
-    ni_cases = pd.read_excel(MISC_GATHERED_AREAS, sheet_name='Daily Cases', index_col='name')
+    ni_cases = pd.read_csv(MISC_GATHERED_AREAS, index_col='name')
     ni_cases.columns = ni_cases.columns.astype(str)
 
     # keep only NI data
@@ -436,7 +436,7 @@ def load_preprocess_other(start_date=DATA_START, cumulative=False, per_pop=True)
         Pandas DataFrame object with COVID-19 figures in selected format.
     """
 
-    other_cases = pd.read_excel(MISC_GATHERED_AREAS, sheet_name='Daily Cases', index_col='name')
+    other_cases = pd.read_csv(MISC_GATHERED_AREAS, index_col='name')
     other_cases.columns = other_cases.columns.astype(str)
 
     # keep only non Northern Ireland or non Wales data
