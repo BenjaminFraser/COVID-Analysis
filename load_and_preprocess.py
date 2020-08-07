@@ -10,7 +10,7 @@ import requests
 import sys
 
 # set save directory paths
-SAVE_DIR = os.path.join(os.getcwd(), 'preprocessed_data')
+SAVE_DIR = os.path.join(os.getcwd(), 'Preprocessed_data')
 
 # start date for majority of datasets
 DATA_START = '2020-03-10'
