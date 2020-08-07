@@ -21,6 +21,8 @@ For each technique the range of plots for each region are output into distinct e
 
 ### Examples
 
+Natural Cubic Spline plots and ARIMA plots are formed for all individual local authority areas within each of the UK areas (England, Scotland, Wales, Northern Ireland, Ireland, Jersey, Isle of Man, and Guernsey). A sample of these are shown below:
+
 ![example of cubic spline plots](example_images/exported_plots_example.png?raw=True "Example plots - Cubic Spline Plots automatically formed and exported.")
 
 ![example of cubic spline plots](example_images/england_sample_cubic_splines.png?raw=True "Example plots - Sample England Cubic Spline plots.")
@@ -29,8 +31,12 @@ For each technique the range of plots for each region are output into distinct e
 
 ![example of ARIMA plots](example_images/glasgow_ARIMA.png?raw=True "Example plots - ARIMA forecast plot.")
 
+In addition, the positive cases per 100,000 population figures are presented for all locations within the final Excel spreadsheet produced. This includes 5 day forward forecasts and a calculation of the gradient for the final forecasts. This gives an indication towards the relative trend of cases for a given area.
+
 ![example of output spreadsheet forecasts](example_images/output_spreadsheet_example.png?raw=True "Example plots - Output spreadsheet figures sample.")
 
 Future work that could significantly improve the effectiveness of this work in providing leading indicators could be to include additional features taken from external data sources, such as mobility data throughout each region, along with population densities, average age of population etc. By introducing this into the models and forming multi-dimensional regression models we could obtain higher assurance on an emerging trend in a given area. This crucially relies on any external data used being relevant, accurate and timely to the original data we have used.
+
+In addition, a dashboard could be used to more effectively present this data. The above work was relatively straightforward to implement as a local dashboard using Dash. 
 
 **Disclaimer:** These models should not be relied upon in any way for predictions or accurate assessments of COVID-19 cases. They should only be used for personal use and/or interest only. Production of an accurate COVID-19 prediction model would require a range of high-quality, timely and accurate data from many sources, and would require much greater diligence and use of appropriate pandemic models developed in-line with subject matter expertise.
