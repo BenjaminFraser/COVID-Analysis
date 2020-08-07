@@ -10,7 +10,7 @@ import requests
 import sys
 
 # set save directory paths
-SAVE_DIR = os.path.join(os.getcwd(), 'Preprocessed_data')
+SAVE_DIR = os.path.join(os.getcwd(), 'preprocessed_data')
 
 # start date for majority of datasets
 DATA_START = '2020-03-10'
@@ -47,7 +47,7 @@ IRELAND_URL = ('http://opendata-geohive.hub.arcgis.com/datasets/d9be85b30d7748b5
                '8aede63_0.csv?outSR={%22latestWkid%22:3857,%22wkid%22:102100}')
 
 # filename for manually collected locations (Northern ireland, Jersey, Isle of Man, Guernsey)
-MISC_GATHERED_AREAS = 'Misc_scraped_data.csv'
+MISC_GATHERED_AREAS = 'Misc_scraped_positive_cases.csv'
 
 
 def cumulative_to_daily(data_df):
