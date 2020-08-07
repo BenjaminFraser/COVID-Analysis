@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # import dependencies and external libs
+import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -16,9 +17,7 @@ from openpyxl.styles import Font, Color, Alignment, Border, Side, colors, Patter
 from openpyxl.styles import NamedStyle
 from openpyxl.utils import get_column_letter
 from openpyxl.formatting.rule import ColorScaleRule
-
 from pandas import ExcelWriter
-
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.linear_model import LinearRegression
@@ -27,10 +26,6 @@ from sklearn.svm import LinearSVR
 from sklearn.ensemble import BaggingRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-
-from statsmodels.tsa.stattools import adfuller
-from statsmodels.tsa.stattools import acf, pacf
-from statsmodels.tsa.seasonal import seasonal_decompose
 from statsmodels.tsa.arima_model import ARIMA
 from tqdm import tqdm
 
@@ -38,6 +33,10 @@ from tqdm import tqdm
 from cubic_splines.natural_cubic_spline import AbstractSpline, NaturalCubicSpline
 
 sns.set_style('darkgrid')
+
+# obtain current date and set save file name for final exported Excel File
+CURRENT_DATE = datetime.datetime.today().strftime('%Y%m%d')
+FILE_SAVE_NAME = f'{CURRENT_DATE}-Positive-Cases-Analysis.xlsx'
 
 # set directory that preprocessed data is stored within
 DATA_SOURCE_DIR = os.path.join(os.getcwd(), 'Preprocessed_data')
@@ -820,7 +819,7 @@ if __name__ == "__main__":
     cell_mapping = {a:b for a,b in zip(number_range, cell_list)}
 
     # save all of our results above into a single DataFrame
-    save_xls(final_df_list, final_df_names, os.path.join(os.getcwd(), 'final_excelfile.xlsx'), 
+    save_xls(final_df_list, final_df_names, os.path.join(os.getcwd(), 'temp_excelfile.xlsx'), 
                 plot_dir_tuples, plot_subdir_tuples, cell_mapping, import_plots=True)
 
     # set up styles and formatting for openpyxl to neaten up our excel file
@@ -860,7 +859,7 @@ if __name__ == "__main__":
     text_cell.border = thin_border
 
     # open excel file and ammend styling as required
-    workbook = openpyxl.load_workbook('final_excelfile.xlsx')
+    workbook = openpyxl.load_workbook('temp_excelfile.xlsx')
 
     # sequentially format all sheets containing tables
     for sheet_name in final_df_names:
@@ -905,4 +904,8 @@ if __name__ == "__main__":
     workbook._sheets.sort(key=lambda sheet: FINAL_SHEET_ORDER[sheet.title])
 
     # save changes to workbook
-    workbook.save("formatted_excelfile.xlsx")
+    workbook.save(FILE_SAVE_NAME)
+
+    # delete all temporary files and data
+    if os.path.isfile("temp_excelfile.xlsx"):
+        os.remove("temp_excelfile.xlsx")
